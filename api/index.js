@@ -4,6 +4,11 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = async function handler(req, res) {
+    // 파비콘 요청은 무시하고 바로 종료
+  if (req.url.includes('favicon.ico')) {
+    res.status(204).end();
+    return;
+  }
   try {
     const url = new URL(req.url, \`http://\${req.headers.host}\`);
     
@@ -65,8 +70,8 @@ module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.send(pngBuffer);
 
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
+    } catch (error) {
+    console.error("에러 발생 원인:", error); // <-- 이 부분을 추가해주세요!
+    res.status(500).send('Internal Server Error: ' + error.message);
   }
 };
