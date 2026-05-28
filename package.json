@@ -1,0 +1,11 @@
+{
+  "name": "episod-status",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node api/index.js"
+  },
+  "dependencies": {
+    "satori": "^0.10.11",
+    "@resvg/resvg-js": "^2.6.0"
+  }
+}
