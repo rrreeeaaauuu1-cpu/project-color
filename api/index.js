@@ -1,7 +1,5 @@
 const satori = require('satori');
 const { Resvg } = require('@resvg/resvg-js');
-const fs = require('fs');
-const path = require('path');
 
 module.exports = async function handler(req, res) {
   if (req.url.includes('favicon.ico')) {
@@ -23,10 +21,10 @@ module.exports = async function handler(req, res) {
     const attitude = getParam('att', '평온');     
     const progress = getParam('prog', '0');     
 
-    // 폰트 파일 읽기 (경로 문제 해결)
-    // __dirname을 사용하여 현재 파일 위치 기준으로 폰트를 찾습니다.
-    const fontPath = path.resolve(__dirname, '../fonts/NotoSerifKR-Regular.ttf');
-    const fontData = fs.readFileSync(fontPath);
+    // 폰트를 URL에서 바로 가져오기 (Google Fonts 등)
+    // Noto Serif KR의 woff 폰트 파일 링크를 사용합니다.
+    const fontUrl = 'https://fonts.gstatic.com/s/notoserifkr/v20/nwpKt62-x1bF-h7I3B7A8A3bQ4f8PjI.woff';
+    const fontData = await fetch(fontUrl).then(res => res.arrayBuffer());
 
     const svg = await satori(
       {
@@ -73,7 +71,6 @@ module.exports = async function handler(req, res) {
 
   } catch (error) {
     console.error("이미지 생성 에러:", error);
-    // 에러 발생 시 텍스트로 어떤 에러인지 출력하도록 수정
     res.status(500).send('서버 에러 발생: ' + error.message);
   }
 };
